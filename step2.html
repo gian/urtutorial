@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>Ur/Web Tutorial</title>
+<style>
+.code {
+	background: #d0d0d0;
+}
+</style>
+</head>
+<body>
+<img src="urheader.png" alt="Ur/Web Tutorial"/></br>
+<hr width="99%"/>
+<h1>Ur/Web Tutorial</h1>
+
+<h2>Step 2</h2>
+
+<p>OK, so we succeeded in getting an application running, but it didn't really <em>do</em> much.  In this step we are going to add a database and have two different views on the same data.</p>
+
+<h2>Table Schema</h2>
+
+<p>We now consider exactly what it is we wish to store in our database.  We're building a blog system, so my approximation of some useful properties are:</p>
+
+<ul>
+<li>A unique identifier</li>
+<li>Entry title</li>
+<li>Entry date</li>
+<li>Entry author</li>
+<li>Entry body text</li>
+</ul>
+
+We return now to our <span class="code">urblog.ur</span> source file.
+
+<h3>urblog.ur</h3>
+
+<pre class="code">
+table t : { Id : int, Title : string, Created : time, Author : string, Body : string }
+  PRIMARY KEY Id
+</pre>
+
+<p>Tables are exist as primitive entities in Ur/Web, which is one of the features that permits it to enforce such stringent checks on your programs.  For anyone who has struggled through the kinds of web programming where SQL queries are represented as non-semantic strings and in which databases and programs need not agree on their structure, this might come as a refreshing surprise.
+
+</body>
+</html>
+
