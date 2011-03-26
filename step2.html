@@ -67,7 +67,7 @@ fun list () =
       &lt;/xml&gt;
 </pre>
 
-<p>If you're reasonably comfortable with <span class="code">map</span>, then our definition of <span class="code">viewAll</span> using <span class="code">queryX</span> should make a reasonable amount of sense.  It takes as its two arguments an SQL query and a function that knows how to turn result rows into XML fragments.  We complicate things slightly because we bind the result of this to <em>rows</em> so that we can display it inside a custom XML fragment, which we do by applying sequencing (;) and returning rows inside our custom XML fragment.</p>
+<p>If you're reasonably comfortable with <span class="code">map</span>, then our definition of <span class="code">list</span> using <span class="code">queryX</span> should make a reasonable amount of sense.  It takes as its two arguments an SQL query and a function that knows how to turn result rows into XML fragments.  We complicate things slightly because we bind the result of this to <em>rows</em> so that we can display it inside a custom XML fragment, which we do by applying sequencing (;) and returning rows inside our custom XML fragment.</p>
 
 <p>Once again, if you're familiar with languages where SQL queries are just strings, you'll be pleasantly surprised to find that Ur/Web ensures that your SQL is well-formed and supplies a DBMS-agnostic syntax.</p>
 
