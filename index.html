@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>Ur/Web Tutorial</title>
+<style>
+.code {
+	background: #d0d0d0;
+}
+</style>
+</head>
+<body>
+<img src="urheader.png" alt="Ur/Web Tutorial"/></br>
+<hr width="99%"/>
+<h1>Ur/Web Tutorial</h1>
+<h2>Gian Perrone - April 2011</h2>
+<p>
+This is an introductory tutorial designed to get you started constructing applications in <a href="http://www.impredicative.com/ur">Ur/Web</a>, a modern, functional language for constructing web applications.  This tutorial takes the form of an example application, and a guide explaining the steps of construction.
+</p>
+<h2>The Application</h2>
+<p>We're going to construct a very simple blog system.  It doesn't aim to be particularly functional, rather, we aim only to construct something that will demonstrate enough of the features (and ultimate value) of Ur/Web.  This system is known as 'UrBlog'.
+
+<h2>Installing Ur/Web</h2>
+<p>You're going to require a working installation of Ur/Web before you can actually run the examples.  This is basically a matter of downloading Ur/Web, building, and then installing.  There can be some subtleties in the build process, however.  The actual installation process is outside the scope of this tutorial, so if you don't have a working installation already, you should read the <a href="http://www.impredicative.com/ur/">Ur/Web site</a>, particularly the <em>Reference Manual</em>, which should probably be your first port of call when any confusion arises.
+</p>
+
+<h2>Prerequisites</h2>
+<p>If you've never touched a functional programming language, particularly a strongly typed language such as ML or Haskell, you're probably not going to be able to follow this tutorial.  I would recommend learning something about one (or both) of those languages first, and then returning to Ur/Web.</p>
+
+<h2>Step 1</h2>
+
+<p>We're going to create a directory <span class="code">urblog</span> for our project, and in it we will create three (empty) files:
+
+<pre class="code">
+urblog/
+   urblog.urp
+   urblog.urs
+   urblog.ur
+</pre>
+
+Now, to add some content to these files!</p>
+
+<h3>urblog.urp</h3>
+
+<p>
+A <span class="code">.urp</span> file describes the files to be included within our project.  In this case, we just want to ensure that our main source file <span class="code">urblog.ur</span> and its signature definition file <span class="code">urblog.urs</span> are included:
+
+<pre class="code">
+urblog
+</pre>
+
+No file extensions are necesary here -- the use of a filename prefix such as this one causes the inclusion of the appropriate .ur and .urs files.</p>
+
+<h3>urblog.urs</h3>
+
+<p>
+A <span class="code">.urs</span> file is a <em>signature definition</em> that describes what artifacts of our implementation will be visible to the outside world:
+
+<pre class="code">
+val main : unit -> transaction page
+</pre>
+
+We start by defining only a single function <span class="code">main</span> that will be visible.  It takes as input values of type <span class="code">unit</span> and returns a value of type <span class="code">transaction page</span>.  We'll describe what exactly that means a little later.</p>
+
+<h3>urblog.ur</h3>
+<p>
+The <span class="code">.ur</span> file holds actual implementation code.  According to the signature we provided in <span class="code">urblog.urs</span>, we are obligated to provide a function called <span class="code">main</span>, so let's go ahead and do that:
+
+<pre class="code">
+fun main () = return &lt;xml&gt;
+  &lt;head&gt;
+    &lt;title&gt;UrBlog&lt;/title&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;UrBlog&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/xml&gt;
+</pre>
+
+If you're used to working in a programming language that treats HTML and XML as strings, then this might look a little surprising.  Within Ur/Web, XML fragments such as these are first-class values (in exactly the same way as integers, strings or booleans might be).  The use of <span class="code">return</span> takes us back to the use of the type <span class="code">transaction page</span> earlier.  The XML fragment has the type <span class="code">page</span>, and <span class="code">return</span> makes this expression part of a transaction, which is a monad in the style of the Haskell IO monad.
+
+</p>
+
+<h2>Putting it all together</h2>
+
+<p>OK, so we've got our source files.  You can compile it all by running:
+
+<pre class="code">
+urweb urblog
+</pre>
+
+from inside the urblog directory.  This should result in a binary called <span class="code">urblog.exe</span>.</p>
+<p>If your system is anything like mine, you can run this binary using a command like <span>./urblog.exe</span>, which results in output such as:
+
+<pre class="code">
+urblog # ./urblog.exe 
+Database connection initialized.
+Listening on port 8080....
+Database connection initialized.
+Database connection initialized.
+</pre>
+
+Marvelous!  Now, the stand-alone webserver associated with your application is now listening for connections on port 8080.  The exact URL is munged slightly by Ur/Web, such that your application name with the first letter upper-cased is the first URI component, followed by the name of any function that is visible outside the module (i.e. any function that is included in the <span class="code">urblog.urs</span> file).  Putting it all together, we can access our application's main function at this URL:</p>
+<p><a href="http://localhost:8080/Urblog/main">http://localhost:8080/Urblog/main</a></p>
+<p>(Note: This is a localhost URL.  You must have the server running on your local machine, and have appropriate firewall/connection settings to permit you to make a connection to your local machine on port 8080).</p>
+<p>If all of that worked, you should see a not-particularly-exciting web application featuring the word 'UrBlog' on a blank page.  If it didn't work, you might have done something wrong, or there could be something wrong with your configuration.  Now might be a good time to join the #urweb IRC channel on Freenode.</p>
+</body>
+</html>
