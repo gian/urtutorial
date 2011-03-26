@@ -1,4 +1,4 @@
-table entry : { Id : int, Title : string, Created : time, Author : string, Bod : string }
+table entry : { Id : int, Title : string, Created : time, Author : string, Body : string }
   PRIMARY KEY Id
 
 fun list () =
@@ -8,7 +8,7 @@ fun list () =
 					<div>
 						<h1>{[row.Entry.Title]}</h1><br />
 							<h2>By {[row.Entry.Author]} at {[row.Entry.Created]}</h2>
-						<p>{[row.Entry.Bod]}</p>
+						<p>{[row.Entry.Body]}</p>
 					</div>
 				</xml>
             );
