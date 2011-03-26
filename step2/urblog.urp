@@ -1,1 +1,4 @@
+database dbname=urblog
+sql urblog.sql
+
 urblog
