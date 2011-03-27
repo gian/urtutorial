@@ -47,6 +47,7 @@ and detail (i:int) =
 						<h2>By {[r.Entry.Author]} at {[r.Entry.Created]}</h2>
 						<p>{[r.Entry.Body]}</p>
 						</div>
+						<a link={list ()}>Back to all entries</a>
 						</body>
 					 </xml>)
 

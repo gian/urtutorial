@@ -50,6 +50,31 @@ and detail (i:int) =
 [...]
 </pre>
 
+<p>To link to our new detail page, we add a link from the entry title within the list function:</p>
+
+<pre class="code">
+[...]
+fun list () =
+    rows &lt;- queryX (SELECT * FROM entry)
+            (fn row =&gt; 
+            &lt;xml&gt;
+               &lt;div class={blogEntry}&gt;
+                  &lt;h1&gt;&lt;a link={detail row.Entry.Id}&gt;{[row.Entry.Title]}&lt;/a&gt;&lt;/h1&gt;
+                     &lt;h2&gt;By {[row.Entry.Author]} at {[row.Entry.Created]}&lt;/h2&gt;
+                  &lt;p&gt;{[row.Entry.Body]}&lt;/p&gt;
+[...]
+</pre>
+
+<h3>urblog.urs</h3>
+
+<p>We need to make our new detail function visible to the outside world, so we add its signature to the signature definition:</p>
+
+<pre class="code">
+val list : unit -&gt; transaction page
+val detail : int -&gt; transaction page
+val main : unit -&gt; transaction page
+</pre>
+
 <p><a href="step3.html">Previous</a> | <a href="step5.html">Next</a></p>
 
 </body>
