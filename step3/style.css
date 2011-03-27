@@ -1,5 +1,8 @@
 .blogEntry {
 	background: #abcdef;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
 }
 
 .blogEntry h1 {
