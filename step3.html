@@ -77,9 +77,18 @@ sql urblog.sql
 urblog
 </pre>
 
-Like all other entities within Ur/Web, styles are named according to their modules.  When we defined a style <span class="code">blogEntry</span> in our main source file, that was implicitly tied to the <span class="code">Urblog</span> module, and therefore our generated code would look for a style called <span class="code">Urblog_blogEntry</span> in the <a href="https://github.com/gian/urtutorial/raw/master/step3/style.css">style.css</a> file.  This <span class="code">rewrite style</span> syntax allows us to tell Ur/Web what we have really called this style in the CSS file.
+<p>Like all other entities within Ur/Web, styles are named according to their modules.  When we defined a style <span class="code">blogEntry</span> in our main source file, that was implicitly tied to the <span class="code">Urblog</span> module, and therefore our generated code would look for a style called <span class="code">Urblog_blogEntry</span> in the <a href="https://github.com/gian/urtutorial/raw/master/step3/style.css">style.css</a> file.  This <span class="code">rewrite style</span> syntax allows us to tell Ur/Web what we have really called this style in the CSS file.</p>
 
-<p><a href="step1.html">Previous</a> | <a href="step3.html">Next</a></p>
+<p>We can build and run this exactly as we built the last step:</p>
+
+<pre class="code">
+# urweb -dbms mysql -db "password=******* dbname=urblog" urblog
+# ./urblog.exe
+</pre>
+
+<p>And now you can access the application exactly as you did previously: <a href="http://localhost:8080/Urblog/list">http://localhost:8080/Urblog/list</a>.</p>
+
+<p><a href="step2.html">Previous</a> | <a href="step4.html">Next</a></p>
 
 </body>
 </html>
