@@ -1,9 +1,10 @@
 .blogEntry {
 	background: #abcdef;
-	border-radius: 6px;
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	padding: 20px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 8px;
+	margin-bottom: 16px;
 }
 
 .blogEntry h1 {
