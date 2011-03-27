@@ -39,6 +39,7 @@ and detail (i:int) =
 	 | Some r => <xml>
 						<head>
 							<title>{[r.Entry.Title]}</title>
+							<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step3/style.css"/>
 						</head>
 						<body>
 						<h1>{[r.Entry.Title]}</h1>
