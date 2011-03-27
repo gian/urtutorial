@@ -1,3 +1,11 @@
 .blogEntry {
 	background: #abcdef;
 }
+
+.blogEntry h1 {
+	font-size: 0.8em;
+}
+
+.blogEntry h2 {
+	font-size: 0.6em;
+}
