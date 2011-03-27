@@ -14,7 +14,7 @@
 
 <h2>Step 2</h2>
 
-<p>OK, so we succeeded in getting an application running, but it didn't really <em>do</em> much.  In this step we are going to add a database and have two different views on the same data.</p>
+<p>OK, so we succeeded in getting an application running, but it didn't really <em>do</em> much.  In this step we are going to add a database and create a way of viewing this data.</p>
 
 <h2>Table Schema</h2>
 
@@ -92,6 +92,20 @@ urblog
 </pre>
 
 <p>The newline before enumerating the filename prefixes is signficant.</p>
+
+<h3>Putting it all together</h3>
+
+Once again, we need to compile our application.  Because we're interacting with a database, you might need to specify which DBMS you would like Ur/Web to compile your application against (PostgreSQL is the default):
+
+<pre class="code">
+urweb -dbms mysql urblog
+</pre>
+
+This generates a binary, and an SQL file suitable for loading into your database engine.  The UrBlog application will expect this database structure to exist within a database called 'urblog'.  For MySQL, this might be loaded in this manner:
+
+<pre class="code">
+mysql -u username -p < urblog.sql
+</pre>
 
 </body>
 </html>
