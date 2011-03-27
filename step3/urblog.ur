@@ -18,7 +18,7 @@ fun list () =
 	 	<xml>
 		  <head>
 				<title>All Entries</title>
-				<link rel="stylesheet" type="text/css" href="style.css"/>
+				<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step3/style.css"/>
 		  </head>
 		  <body>
 			<h1>All Entries</h1>

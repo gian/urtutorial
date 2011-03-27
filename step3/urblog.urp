@@ -1,3 +1,5 @@
+allow url https://github.com/gian/urtutorial/raw/master/step3/style.css
+rewrite style Urblog/blogEntry blogEntry
 database dbname=urblog
 sql urblog.sql
 
