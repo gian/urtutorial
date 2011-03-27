@@ -76,6 +76,49 @@ val detail : int -&gt; transaction page
 val main : unit -&gt; transaction page
 </pre>
 
+<h2>Adding Comments</h2>
+
+<p>So you'll notice that we have so far restricted ourselves to creating functions that generate complete pages suitable for serving directly to the user.  What if we want to create a function that generates just part of a page, and then include that content on other pages?  It turns out Ur/Web gives us plenty of scope within which to do this.  We'll demonstrate this by creating a comment-displaying function that we can then include elsewhere.</p>
+
+<h3>urblog.ur</h3>
+
+<p>We need a table in which to store comments on entries.  We define this table much like we did our original one:</p>
+
+<pre class="code">
+table comment : {Id : int, Entry : int, Created : time, Author : string, Body : string }
+	PRIMARY KEY Id,
+	CONSTRAINT Entry FOREIGN KEY Entry REFERENCES entry(Id)
+</pre>
+
+<p>We also introduce a new style <span class="code">blogComment</span>.</p>
+
+<p>Our comment function is pretty simple.  The only thing we have to do is specify a type annotation -- Ur/Web can't always figure out the type of functions on its own.  In this case we specify that our function is <span class="code">transaction xbody</span>.  This type (<span class="code">xbody</span>) is that of XML that is suitable for inclusion within a <span class="code">body</span> tag.  The transaction, as before, indicates that this is part of a monad, and is therefore suitable for inclusion within other transactions (as all content that will be delivered to users must be).</p>
+
+<pre class="code">
+fun comments i : transaction xbody =
+   queryX (SELECT * FROM comment WHERE comment.Entry = {[i]})
+      (fn row =&gt;
+         &lt;xml&gt;
+            &lt;div class={blogComment}&gt;
+               &lt;p&gt;{[row.Comment.Body]}&lt;/p&gt;
+               &lt;p&gt;By {[row.Comment.Author]} at {[row.Comment.Created]}&lt;/p&gt;
+            &lt;/div&gt;
+         &lt;/xml&gt;)
+</pre>
+
+<p>Now, we can't just call this function directly, because it is returning a transaction (which is necessary because it queries our database), so instead we must <em>bind</em> it within our entry detail function:
+
+<pre class="code">
+and detail (i:int) =
+   res &lt;- oneOrNoRows (SELECT * FROM entry WHERE entry.Id = {[i]});
+   comm &lt;- comments i;
+   [...]
+                  &lt;p&gt;{[r.Entry.Body]}&lt;/p&gt;
+                  &lt;/div&gt;
+                  {comm}
+   [...]
+</pre>
+
 <p><a href="step3.html">Previous</a> | <a href="step5.html">Next</a></p>
 
 </body>

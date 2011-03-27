@@ -1,7 +1,22 @@
 table entry : { Id : int, Title : string, Created : time, Author : string, Body : string }
   PRIMARY KEY Id
 
+table comment : {Id : int, Entry : int, Created : time, Author : string, Body : string }
+	PRIMARY KEY Id,
+	CONSTRAINT Entry FOREIGN KEY Entry REFERENCES entry(Id)
+
 style blogEntry
+style blogComment
+
+fun comments i : transaction xbody =
+	queryX (SELECT * FROM comment WHERE comment.Entry = {[i]})
+		(fn row =>
+			<xml>
+				<div class={blogComment}>
+					<p>{[row.Comment.Body]}</p>
+					<p>By {[row.Comment.Author]} at {[row.Comment.Created]}</p>
+				</div>
+			</xml>)
 
 fun list () =
     rows <- queryX (SELECT * FROM entry)
@@ -28,6 +43,7 @@ fun list () =
 
 and detail (i:int) =
 	res <- oneOrNoRows (SELECT * FROM entry WHERE entry.Id = {[i]});
+	comm <- comments i;
 	return
 	(case res of
 		None => <xml>
@@ -47,6 +63,7 @@ and detail (i:int) =
 						<h2>By {[r.Entry.Author]} at {[r.Entry.Created]}</h2>
 						<p>{[r.Entry.Body]}</p>
 						</div>
+						{comm}
 						<a link={list ()}>Back to all entries</a>
 						</body>
 					 </xml>)
