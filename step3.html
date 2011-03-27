@@ -42,25 +42,25 @@ style blogEntry
 fun list () =
     rows &lt;- queryX (SELECT * FROM entry)
             (fn row =&gt; 
-				&lt;xml&gt;
-					&lt;div class={blogEntry}&gt;
-						&lt;h1&gt;{[row.Entry.Title]}&lt;/h1&gt;
-							&lt;h2&gt;By {[row.Entry.Author]} at {[row.Entry.Created]}&lt;/h2&gt;
-						&lt;p&gt;{[row.Entry.Body]}&lt;/p&gt;
-					&lt;/div&gt;
-				&lt;/xml&gt;
+            &lt;xml&gt;
+               &lt;div class={blogEntry}&gt;
+                  &lt;h1&gt;{[row.Entry.Title]}&lt;/h1&gt;
+                     &lt;h2&gt;By {[row.Entry.Author]} at {[row.Entry.Created]}&lt;/h2&gt;
+                  &lt;p&gt;{[row.Entry.Body]}&lt;/p&gt;
+               &lt;/div&gt;
+            &lt;/xml&gt;
             );
     return 
-	 	&lt;xml&gt;
-		  &lt;head&gt;
-				&lt;title&gt;All Entries&lt;/title&gt;
-				&lt;link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step3/style.css"/&gt;
-		  &lt;/head&gt;
-		  &lt;body&gt;
-			&lt;h1&gt;All Entries&lt;/h1&gt;
+       &lt;xml&gt;
+        &lt;head&gt;
+            &lt;title&gt;All Entries&lt;/title&gt;
+            &lt;link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step3/style.css"/&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+         &lt;h1&gt;All Entries&lt;/h1&gt;
         {rows}
-		  &lt;/body&gt;
-    	&lt;/xml&gt;
+        &lt;/body&gt;
+       &lt;/xml&gt;
 [...]
 </pre>
 
