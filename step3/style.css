@@ -15,10 +15,10 @@ body {
 
 .blogEntry h1 {
 	font-size: 1.5em;
-	top-margin: -4px;
+	margin-top: -3px;
 }
 
 .blogEntry h2 {
 	font-size: 1.1em;
-	top-margin: -3px;
+	margin-top: -10px;
 }
