@@ -95,17 +95,21 @@ urblog
 
 <h3>Putting it all together</h3>
 
-Once again, we need to compile our application.  Because we're interacting with a database, you might need to specify which DBMS you would like Ur/Web to compile your application against (PostgreSQL is the default):
+<p>Once again, we need to compile our application.  Because we're interacting with a database, you might need to specify which DBMS you would like Ur/Web to compile your application against (PostgreSQL is the default):</p>
 
 <pre class="code">
 urweb -dbms mysql urblog
 </pre>
 
-This generates a binary, and an SQL file suitable for loading into your database engine.  The UrBlog application will expect this database structure to exist within a database called 'urblog'.  For MySQL, this might be loaded in this manner:
+<p>This generates a binary, and an SQL file suitable for loading into your database engine.  The UrBlog application will expect this database structure to exist within a database called 'urblog'.  For MySQL, this might be loaded in this manner:</p>
 
 <pre class="code">
-mysql -u username -p < urblog.sql
+mysql -u username -p &lt; urblog.sql
 </pre>
+
+<p>Finally, we can access this application via the URL: <a href="http://localhost:8080/Urblog/list">http://localhost:8080/Urblog/list</a>.  There is no data in the database at present, so it's going to be particularly bare.  If you're so inclined, you could manually insert some rows into the database table to verify that it works.  We'll get back to adding data later.</p>
+
+<p><a href="step1.html">Previous</a> | <a href="step3.html">Next</a></p>
 
 </body>
 </html>
