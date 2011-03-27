@@ -18,7 +18,7 @@
 
 <p>Adding some data is pretty simple.  Ur/Web does some automatic table name generation.  Looking inside the <span class="code">urblog</span> database, there is one table: <span class="code">uw_Urblog_entry</span>.  Tables are named according to the modules they belong to (and module names are in turn defined by file names -- our <span class="code">entry</span> table is defined inside a file called <span class="code">urblog.ur</span>, which leads to an implied module <span class="code">Urblog</span>).  This separation is used by Ur/Web to achieve useful encapsulation of tables, such that one module cannot (inadvertantly or intentionally) interfere with tables that are owned by some other module.  I added some test data like this:</p>
 
-<pre>
+<pre class="code">
 insert into uw_Urblog_entry (uw_id, uw_title, uw_created, uw_author, uw_body) values (0, "This is a test entry", now(), "Gian", "This is a test entry.  I hope you like it");
 insert into uw_Urblog_entry (uw_id, uw_title, uw_created, uw_author, uw_body) values (1, "This is also a test entry", now(), "Gian", "This is yet another test entry.  I hope you like it");
 </pre>
