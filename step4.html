@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>Ur/Web Tutorial</title>
+<style>
+.code {
+	background: #d0d0d0;
+}
+</style>
+</head>
+<body>
+<img src="urheader.png" alt="Ur/Web Tutorial"/></br>
+<hr width="99%"/>
+<h1>Ur/Web Tutorial</h1>
+
+<h2>Step 4</h2>
+
+<p>In this step, we're going to add a "detail" view for blog entries.  This will demonstrate how links and parameters work in Ur/Web, as well as mutual recursion.</p>
+
+<p>To create our detail links, we're going to want a new function that takes a parameter -- the id of the entry we want to view, in this case.</p>
+
+<h3>urblog.ur</h3>
+
+<p>We're going to create <span class="code">detail</span> as a <em>mutually recursive</em> function with <span class="code">list</span>.  In order to link to something in Ur/Web, it's necessary that it be visible within the scope of the caller.  If we want to be able to link from a detail page back to the main list, they each depend on the other being defined.  We use the <span class="code">and</span> keyword to introduce mutually recursive definitions.
+
+<pre class="code">
+[...]
+and detail (i:int) =
+   res &lt;- oneOrNoRows (SELECT * FROM entry WHERE entry.Id = {[i]});
+   return
+   (case res of
+      None =&gt; &lt;xml&gt;
+               &lt;head&gt;&lt;title&gt;Entry Not Found&lt;/title&gt;&lt;/head&gt;
+               &lt;body&gt;
+                  &lt;h1&gt;Entry not found&lt;/h1&gt;
+               &lt;/body&gt;
+              &lt;/xml&gt;
+    | Some r =&gt; &lt;xml&gt;
+                  &lt;head&gt;
+                     &lt;title&gt;{[r.Entry.Title]}&lt;/title&gt;
+                     &lt;link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step3/style.css"/&gt;
+                  &lt;/head&gt;
+                  &lt;body&gt;
+                  &lt;h1&gt;{[r.Entry.Title]}&lt;/h1&gt;
+                  &lt;div class={blogEntry}&gt;
+                  &lt;h2&gt;By {[r.Entry.Author]} at {[r.Entry.Created]}&lt;/h2&gt;
+                  &lt;p&gt;{[r.Entry.Body]}&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;/body&gt;
+                &lt;/xml&gt;)
+[...]
+</pre>
+
+<p><a href="step3.html">Previous</a> | <a href="step5.html">Next</a></p>
+
+</body>
+</html>
+
+
+
