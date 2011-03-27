@@ -59,8 +59,8 @@ and detail (i:int) =
 						</head>
 						<body>
 						<h1>{[r.Entry.Title]}</h1>
-						<div class={blogEntry}>
 						<h2>By {[r.Entry.Author]} at {[r.Entry.Created]}</h2>
+						<div class={blogEntry}>
 						<p>{[r.Entry.Body]}</p>
 						</div>
 						{comm}
