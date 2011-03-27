@@ -1,3 +1,8 @@
+body {
+	background: #f0f0f0;
+	font-family: arial, sans-serif;
+}
+
 .blogEntry {
 	background: #abcdef;
 	border-radius: 10px;
