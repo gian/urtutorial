@@ -1,12 +1,14 @@
 table entry : { Id : int, Title : string, Created : time, Author : string, Body : string }
   PRIMARY KEY Id
 
+sequence commentS
 table comment : {Id : int, Entry : int, Created : time, Author : string, Body : string }
 	PRIMARY KEY Id,
 	CONSTRAINT Entry FOREIGN KEY Entry REFERENCES entry(Id)
 
 style blogEntry
 style blogComment
+style commentForm
 
 fun comments i : transaction xbody =
 	queryX (SELECT * FROM comment WHERE comment.Entry = {[i]})
@@ -18,7 +20,20 @@ fun comments i : transaction xbody =
 				</div>
 			</xml>)
 
-fun list () =
+and handler r = 
+(*	    id <- nextval commentS;
+    		dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[readError r.Entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP)); *)
+		(detail (readError r.Entry))
+
+and mkCommentForm (id:int) s : xbody =
+	<xml><form><hidden{#Entry} value={show id}/>
+		<p>Your Name:<br/></p><textbox{#Author}/><br/>
+		<p>Your Comment:<br/></p><textarea{#Body}/>
+		<br/><br/>
+      <submit value="Add Comment" action={handler}/>
+		<button value="Cancel" onclick={set s False}/></form></xml>
+
+and list () =
     rows <- queryX (SELECT * FROM entry)
             (fn row => 
 				<xml>
@@ -44,6 +59,7 @@ fun list () =
 and detail (i:int) =
 	res <- oneOrNoRows (SELECT * FROM entry WHERE entry.Id = {[i]});
 	comm <- comments i;
+	commentSource <- source False;
 	return
 	(case res of
 		None => <xml>
@@ -55,13 +71,20 @@ and detail (i:int) =
 	 | Some r => <xml>
 						<head>
 							<title>{[r.Entry.Title]}</title>
-							<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step4/style.css"/>
+							<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step5/style.css"/>
 						</head>
 						<body>
 						<h1>{[r.Entry.Title]}</h1>
 						<h2>By {[r.Entry.Author]} at {[r.Entry.Created]}</h2>
 						<div class={blogEntry}>
 						<p>{[r.Entry.Body]}</p>
+						<button value="Add Comment" onclick={set commentSource True}/>
+						</div>
+						<div class={commentForm}>
+						<dyn signal={s <- signal commentSource;
+                         if s then 
+								 	return (mkCommentForm i commentSource) 
+								 else return <xml/>}/>
 						</div>
 						{comm}
 						<a link={list ()}>Back to all entries</a>
