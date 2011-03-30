@@ -76,6 +76,29 @@ and detail (i:int) =
 
 <p>We also add a new style and add an appropriate rewrite for the style name.</p> 
 
+<h3>Updating the database</h3>
+
+<p>You can compile and run the application as it is.  The comment form will appear on the detail page when you click "Add Comment", and it will hide again when you press "Cancel".  Pretty neat, huh?  Let's go ahead now and actually save our comments to the database.</p>
+
+<p>We are going to need to add a <span class="code">sequence</span> in order to generate unique (and sequential) comment IDs in the database for the index of the comment table.  We do this using the <span class="code">sequence</span> keyword:</p>
+
+<pre class="code">
+[...]
+sequence commentS
+[...]
+</pre>
+
+<p>Now to define our handler function, which will increment the sequence we've just created, and insert into the database all the fields we gathered from the comment form:</p>
+
+<pre class="code">
+and handler r = 
+       id <- nextval commentS;
+          dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[readError r.Entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP));
+      (detail (readError r.Entry))
+</pre>
+
+<p>The <span class="code">dml</span> function performs updates on the database, and takes an SQL query as its argument.  It is basically as simple as matching the fields of our submitted form (which reside in <span class="code">r</span>, as the form values are passed as an argument to the handler function).  Ur/Web is going to make sure we don't do anything silly like expect form values  that don't exist, and ensure that we don't do anything completely silly like leave ourselves open to SQL injection attacks.  Aside from allowing users to create arbitrarily many database rows that will be displayed, there would be no danger to placing this application directly into a public environment exactly as it is now.</p>
+
 <p><a href="step4.html">Previous</a> | <a href="step6.html">Next</a></p>
 
 </body>

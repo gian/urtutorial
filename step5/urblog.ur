@@ -21,8 +21,8 @@ fun comments i : transaction xbody =
 			</xml>)
 
 and handler r = 
-(*	    id <- nextval commentS;
-    		dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[readError r.Entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP)); *)
+	    id <- nextval commentS;
+    		dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[readError r.Entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP));
 		(detail (readError r.Entry))
 
 and mkCommentForm (id:int) s : xbody =
