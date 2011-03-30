@@ -99,6 +99,12 @@ and handler r =
 
 <p>The <span class="code">dml</span> function performs updates on the database, and takes an SQL query as its argument.  It is basically as simple as matching the fields of our submitted form (which reside in <span class="code">r</span>, as the form values are passed as an argument to the handler function).  Ur/Web is going to make sure we don't do anything silly like expect form values  that don't exist, and ensure that we don't do anything completely silly like leave ourselves open to SQL injection attacks.  Aside from allowing users to create arbitrarily many database rows that will be displayed, there would be no danger to placing this application directly into a public environment exactly as it is now.</p>
 
+<h2>Putting it all together</h2>
+
+<p>As ever, you can compile the application.  Make sure you have at least one test blog entry you can work with in your database, and then you can test the application by going to:</p>
+
+<p><a href="http://localhost:8080/Urblog/list">http://localhost:8080/Urblog/list</a></p>
+
 <p><a href="step4.html">Previous</a> | <a href="step6.html">Next</a></p>
 
 </body>
