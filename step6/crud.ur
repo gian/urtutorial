@@ -80,7 +80,7 @@ functor Make(M : sig
           <form>
             {@foldR [colMeta] [fn cols => xml form [] (map snd cols)]
               (fn [nm :: Name] [t ::_] [rest ::_] [[nm] ~ rest] (col : colMeta t) acc => <xml>
-                <li> {cdata col.Nam}: {col.Widget [nm]}</li>
+                <li> {cdata col.Nam}:<br /> {col.Widget [nm]}</li>
                 {useMore acc}
               </xml>)
               <xml/>
@@ -132,7 +132,7 @@ functor Make(M : sig
                   (fn [nm :: Name] [t ::_] [rest ::_] [[nm] ~ rest] v (col : colMeta t)
                                    (acc : xml form [] (map snd rest)) =>
                       <xml>
-                        <li> {cdata col.Nam}: {col.WidgetPopulated [nm] v}</li>
+                        <li> {cdata col.Nam}:<br/> {col.WidgetPopulated [nm] v}</li>
                         {useMore acc}
                       </xml>)
                   <xml/>
