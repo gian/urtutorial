@@ -15,7 +15,7 @@
 <h2>Step 6</h2>
 <p><a href="step5.html">Previous</a> | <a href="step7.html">Next</a></p>
 
-<p>In this step of the tutorial we are going to introduce one of the rather unique features of Ur/Web.  <em>Metaprogramming</em> over row types allows us to write programs that are able to perform limited computation over the structure of rows.  In practical terms, this means that we can write code that operates independently of the particular table or form inputs, and which can therefore be reused in many different situations.  We're going to demonstrate this by taking a pre-existing component (the <em>Crud</em> -- create, read, update, delete -- example) from the Ur/Web site and apply it to our application to enable the creation and editing of blog entries.</p>
+<p>In this step of the tutorial we are going to introduce one of the rather unique features of Ur/Web.  <em>Metaprogramming</em> over row types allows us to write programs that are able to perform limited computation over the structure of rows.  In practical terms, this means that we can write code that operates independently of the particular table or form inputs, and which can therefore be reused in many different situations.  We're going to demonstrate this by taking a pre-existing component (the <em>Crud</em> -- create, read, update, delete -- example, slightly modified) from the Ur/Web site and apply it to our application to enable the creation and editing of blog entries.</p>
 
 <p>How does this differ from components parameterised on table structure, you might ask?  Well, that's a reasonable way of thinking about some of what this metaprogramming enables, but in Ur/Web it goes further.  We can use familiar programming constructs (e.g. map and fold) to compute new types from old ones.  We can invoke appropriate display functions based upon the types of the fields in a row.  This gives much of the same flexibility that dynamic web languages can provide, however Ur/Web does it in a way that is statically checked at compile time.</p>
 
@@ -23,7 +23,7 @@
 
 <h3>urblog.urp</h3>
 
-<p>Now we need to include our new crud module:</p>
+<p>Now we need to include our new Crud module:</p>
 
 <pre class="code">
 allow url https://github.com/gian/urtutorial/raw/master/step6/style.css
@@ -36,6 +36,44 @@ sql urblog.sql
 crud
 urblog
 </pre>
+
+<h3>urblog.ur</h3>
+
+<p>Including our Crud module is pretty simple, if you're accustomed to the use of functors in SML.  Briefly, a functor takes a module (structure) as input and returns another structure.  In this instance we are obligated to provide a structure with a table, a title field and a record mapping columns to functions that know how to display them on the page:</p>
+
+<pre class="code">
+open Crud.Make(struct
+  val tab = entry
+                          
+  val title = "Blog Admin"
+                               
+  val cols = {Title = Crud.string "Blog Title",
+              Created = Crud.time "Created",
+              Author = Crud.string "Author",
+              Body = Crud.string "Entry Body"}
+end)
+</pre>
+
+<h3>urblog.urs</h3>
+
+<p>We used <span class="code">open</span> in the last example to import everything from the structure returned by <span class="code">Crud.Make</span> into the current namespace.  As a result, we need to make our brand new <span class="code">admin</span> function visible to the outside world:</p>
+
+<pre class="code">
+val list : unit -&gt; transaction page
+val detail : int -&gt; transaction page
+val main : unit -&gt; transaction page
+val admin : unit -&gt; transaction page
+</pre>
+
+<h3>Running the example</h3>
+
+<p>If you go through the process of compiling this example as usual and importing the generated SQL file, you should be able to view your brand new admin interface at this URL:</p>
+
+<p><a href="http://localhost:8080/Urblog/admin">http://localhost:8080/Urblog/admin</a></p>
+
+<h2>Making it a little prettier</h2>
+
+<p>So, the Crud interface works, but it's not very pretty.  Let's dedicate the rest of this section to replacing the default column-displaying functions with custom functions that are more appropriate for our data.</p>
 
 <p><a href="step5.html">Previous</a> | <a href="step7.html">Next</a></p>
 
