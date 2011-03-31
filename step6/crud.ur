@@ -46,7 +46,7 @@ functor Make(M : sig
 
     sequence seq
 
-    fun list () =
+    fun editList () =
         rows <- queryX (SELECT * FROM tab AS T)
                        (fn (fs : {T : $([Id = int] ++ map fst M.cols)}) => <xml>
                          <tr>
@@ -99,7 +99,7 @@ functor Make(M : sig
                        fn input col acc => acc ++ {nm = @sql_inject col.Inject (col.Parse input)})
                       {} M.fl inputs M.cols
                      ++ {Id = (SQL {[id]})}));
-        ls <- list ();
+        ls <- editList ();
         return <xml><body>
           <p>Inserted with ID {[id]}.</p>
 
@@ -117,7 +117,7 @@ functor Make(M : sig
                                                            @sql_inject col.Inject (col.Parse input)})
                               {} M.fl inputs M.cols)
                             tab (WHERE T.Id = {[id]}));
-                ls <- list ();
+                ls <- editList ();
                 return <xml><body>
                   <p>Saved!</p>
 
@@ -146,7 +146,7 @@ functor Make(M : sig
         let
             fun delete () =
                 dml (DELETE FROM tab WHERE Id = {[id]});
-                ls <- list ();
+                ls <- editList ();
                 return <xml><body>
                   <p>The deed is done.</p>
                   
@@ -161,7 +161,7 @@ functor Make(M : sig
         end
 
     and admin () =
-        ls <- list ();
+        ls <- editList ();
         return <xml><head>
           <title>{cdata M.title}</title>
         </head><body>
