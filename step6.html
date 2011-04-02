@@ -73,7 +73,29 @@ val admin : unit -&gt; transaction page
 
 <h2>Making it a little prettier</h2>
 
-<p>So, the Crud interface works, but it's not very pretty.  Let's dedicate the rest of this section to replacing the default column-displaying functions with custom functions that are more appropriate for our data.</p>
+<p>So, the Crud interface works, but it's not very pretty.  Particularly, the way in which body text is displayed and edited is somewhat inconvenient.  The default 'string' column transformations are inappropriate.  We'll go ahead and define a custom transformation for the <span class="code">Body</span> field:</p>
+
+<pre class="code">
+  val cols = {Title = Crud.string "Blog Title",
+              Created = Crud.time "Created",
+              Author = Crud.string "Author",
+              Body = {Nam = "Entry Body",
+                      Show = (fn b =&gt; &lt;xml&gt;{[String.length b]} characters&lt;/xml&gt;),
+                      Widget = (fn [nm :: Name] =&gt; &lt;xml&gt;
+                        &lt;textarea{nm}&gt;
+                        &lt;/textarea&gt;
+                      &lt;/xml&gt;),
+                      WidgetPopulated = (fn [nm :: Name] b =&gt; &lt;xml&gt;
+                        &lt;textarea{nm}&gt;
+                           {[b]}
+                         &lt;/textarea&gt;
+                      &lt;/xml&gt;),
+              Parse = (fn s =&gt; readError s),
+              Inject = _}
+            }
+</pre>
+
+<p>Now we are using a text area instead of a single-line text field to create and update our entry text.  Obviously you could add styling or custom formatting for the other fields too.</p>
 
 <p><a href="step5.html">Previous</a> | <a href="step7.html">Next</a></p>
 
