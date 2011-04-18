@@ -16,6 +16,104 @@
 
 <p><a href="step6.html">Previous</a> | <a href="step8.html">Next</a></p>
 
+<p>Obviously from the last step you are free to improve the look and feel of your blog system as you wish.  However, we're going to move onto another important feature for any public-facing web application: authentication.</p>
+
+<p>The general scheme for web authentication applies in Ur/Web as it would in almost any other language, except Ur/Web does a few things for us that makes life easier.  First, cookies are encrypted and are owned by a particular module such that we don't really have to worry too much about the integrity or security of things we store in them.  Secondly, because database tables are owned by a module, we can be sure that we're not going to accidentally leak sensitive data.</p>
+
+<p>We're going to go ahead and create a new <span class="code">Auth</span> module, with the relevant files being <span class="code">auth.ur</span> and <span class="code">auth.urs</span>.</p>
+
+<h3>auth.urs</h3>
+
+<p>Our signature file is going to define a couple of helpful externally-visible functions - one that will display a transaction page iff the user is authenticated, and another to permit logging in:</p>
+
+<pre class="code">
+val displayIfAuthenticated : transaction page -&gt; transaction page
+val login : unit -&gt; transaction page
+</pre>
+
+<h3>auth.ur</h3>
+
+<p>We begin skeletally with our implementation.  We'll make our display function just return the page no matter what, and we'll design a login form that goes to a nil handler:</p>
+
+<pre class="code">
+fun displayIfAuthenticated page = page
+
+fun loginHandler row = return &lt;xml&gt;&lt;head/&gt;&lt;body/&gt;&lt;/xml&gt;
+
+fun login () = return
+   &lt;xml&gt;
+      &lt;head&gt;&lt;title&gt;Login to UrBlog&lt;/title&gt;&lt;/head&gt;
+      &lt;body&gt;
+         &lt;form&gt;
+            &lt;p&gt;Username:&lt;br/&gt;&lt;textbox{#Username}/&gt;&lt;br/&gt;
+               Password:&lt;br/&gt;&lt;password{#Password}/&gt;&lt;br/&gt;
+               &lt;submit value="Login" action={loginHandler}/&gt;
+            &lt;/p&gt;
+         &lt;/form&gt;
+      &lt;/body&gt;
+   &lt;/xml&gt;
+</pre>
+
+<p>This will at least satisfy our signature, despite not being terribly interesting.  Let's go ahead and add <span class="code">auth</span> to our <span class="code">urblog.urp</span> file so that our new module will be included:
+
+<h3>urblog.urp</h3>
+
+<pre class="code">
+[...]
+
+$/string
+auth
+crud
+urblog
+</pre>
+
+<p>The order in which these modules appear is somewhat significant, but it shouldn't take a great deal of effort to figure out how dependencies are resolved in this way.</p>
+
+<h2>Authentication</h2>
+
+<p>The basic mechanism for our authentication is going to involve checking credentials against a <span class="code">user</span> table, and in the case that the credentials match, setting a cookie that includes the username and password.  Checking if a user is logged in will then just require re-checking the credentials in the cookie against those in the database.</p>
+
+<p>Defining a cookie is pretty simple in Ur/Web.  It involves using the <span class="code">cookie</span> keyword and defining the kinds of data we would like to put into it:</p>
+
+<pre class="code">
+cookie userSession : {Username : string, Password : string}
+</pre>
+
+<p>If you're used to the kinds of web languages where they do exactly what you say and security is your problem, then this act of putting the password into the cookie might seem a bit dubious.  Don't fear, however.  Ur/Web cookies are encrypted.  In a production system you might want to go through the usual process of applying some kind of cryptographically strong hashing function, but for the moment we're not going to bother, safe in the knowledge that we're not being completely irresponsible.</p>
+
+<p>We might as well go ahead and add our user table now, too:</p>
+
+<pre class="code">
+table user : { Id : int, Username : string, Password : string, Email : string }
+   PRIMARY KEY Id
+</pre>
+
+<p>Naturally, you are free to add some other fields that are of interest to you.  Let's go ahead, however, and implement our login handler based on this new table:</p>
+
+<pre class="code">
+fun loginHandler row =
+   re' &lt;- oneOrNoRows(SELECT user.Id, 
+                             user.Username, 
+                             user.Password 
+                        FROM user 
+                       WHERE user.Username = {[row.Username]} 
+                         AND user.Password = {[row.Password]});
+   case re' of
+      None =&gt; error &lt;xml&gt;Invalid Login&lt;/xml&gt;
+    | Some re =&gt; 
+           setCookie userSession 
+               {Value = {Username = readError re.User.Username, 
+                         Password = readError re.User.Password},
+                Expires = None,
+                Secure = True};
+         return &lt;xml&gt;
+            &lt;head&gt;&lt;title&gt;Logged in!&lt;/title&gt;&lt;/head&gt;
+            &lt;body&gt;
+               &lt;h1&gt;Logged in&lt;/h1&gt;
+            &lt;/body&gt;
+         &lt;/xml&gt;
+</pre>
+
 <p><a href="step6.html">Previous</a> | <a href="step8.html">Next</a></p>
 </body>
 </html>

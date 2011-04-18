@@ -1,0 +1,46 @@
+body {
+	background: #f0f0f0;
+	font-family: arial, sans-serif;
+}
+
+.blogEntry {
+	background: #abcdef;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 8px;
+	padding-left: 16px;
+	margin-bottom: 16px;
+}
+
+.blogEntry h1 {
+	font-size: 1.5em;
+	margin-top: 1px;
+}
+
+.blogEntry h2 {
+	font-size: 1.1em;
+	margin-top: -10px;
+}
+
+.blogComment {
+	background: #d0d0d0;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 8px;
+	padding-left: 16px;
+	margin-bottom: 16px;
+}
+
+.commentForm {
+	background: #ffffff;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 8px;
+	padding-left: 16px;
+	margin-bottom: 16px;
+}
+
+
