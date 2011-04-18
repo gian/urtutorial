@@ -17,7 +17,7 @@ fun ifAuthenticated page row =
 					{Value = {Username = readError re.User.Username, 
 								 Password = readError re.User.Password},
                 Expires = None,
-                Secure = True};
+                Secure = False};
 					 page
 			
 fun loginHandler row = 

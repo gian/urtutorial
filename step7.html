@@ -131,7 +131,7 @@ fun ifAuthenticated page row =
                {Value = {Username = readError re.User.Username, 
                          Password = readError re.User.Password},
                 Expires = None,
-                Secure = True};
+                Secure = False};
                 page
          
 fun loginHandler row = 
@@ -145,7 +145,13 @@ fun loginHandler row =
 fun displayIfAuthenticated page =
    c &lt;- getCookie userSession;
    case c of
-      None =&gt; error &lt;xml&gt;Not logged in&lt;/xml&gt;
+      None =&gt; return 
+         &lt;xml&gt;&lt;head/&gt;
+            &lt;body&gt;
+            &lt;h1&gt;Not logged in.&lt;/h1&gt;
+            &lt;p&gt;&lt;a link={login()}&gt;Login&lt;/a&gt;&lt;/p&gt;
+            &lt;/body&gt;
+         &lt;/xml&gt;
     | Some c' =&gt; ifAuthenticated page c'
 </pre>
 
