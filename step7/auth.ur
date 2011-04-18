@@ -31,10 +31,16 @@ fun loginHandler row =
 fun displayIfAuthenticated page =
 	c <- getCookie userSession;
 	case c of
-		None => error <xml>Not logged in</xml>
+		None => return 
+			<xml><head/>
+				<body>
+				<h1>Not logged in.</h1>
+				<p><a link={login()}>Login</a></p>
+				</body>
+			</xml>
 	 | Some c' => ifAuthenticated page c'
 
-fun login () = return
+and login () = return
 	<xml>
 		<head><title>Login to UrBlog</title></head>
 		<body>
