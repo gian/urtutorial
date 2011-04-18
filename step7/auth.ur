@@ -3,9 +3,7 @@ table user : { Id : int, Username : string, Password : string, Email : string }
 
 cookie userSession : {Username : string, Password : string}
 
-fun displayIfAuthenticated page = page
-
-fun loginHandler row =
+fun ifAuthenticated page row =
 	re' <- oneOrNoRows(SELECT user.Id, 
 									  user.Username, 
 									  user.Password 
@@ -20,12 +18,21 @@ fun loginHandler row =
 								 Password = readError re.User.Password},
                 Expires = None,
                 Secure = True};
-			return <xml>
+					 page
+			
+fun loginHandler row = 
+	ifAuthenticated (return <xml>
 				<head><title>Logged in!</title></head>
 				<body>
 					<h1>Logged in</h1>
 				</body>
-			</xml>
+			</xml>) row
+
+fun displayIfAuthenticated page =
+	c <- getCookie userSession;
+	case c of
+		None => error <xml>Not logged in</xml>
+	 | Some c' => ifAuthenticated page c'
 
 fun login () = return
 	<xml>

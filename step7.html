@@ -114,6 +114,68 @@ fun loginHandler row =
          &lt;/xml&gt;
 </pre>
 
+<p>Interestingly enough, we've actually just implemented <span class="code">displayIfAuthenticated</span> as well!  Well, almost.  The row-level polymorphism in Ur/Web means that any row that can be shown by the type checker to have the fields <span class="code">Username</span> and <span class="code">Password</span> are suitable as arguments to this function.  Our cookie has this property too!  So let's go ahead and generalise this function:</p>
+
+<pre class="code">
+fun ifAuthenticated page row =
+   re' &lt;- oneOrNoRows(SELECT user.Id, 
+                             user.Username, 
+                             user.Password 
+                        FROM user 
+                       WHERE user.Username = {[row.Username]} 
+                         AND user.Password = {[row.Password]});
+   case re' of
+      None =&gt; error &lt;xml&gt;Invalid Login&lt;/xml&gt;
+    | Some re =&gt; 
+           setCookie userSession 
+               {Value = {Username = readError re.User.Username, 
+                         Password = readError re.User.Password},
+                Expires = None,
+                Secure = True};
+                page
+         
+fun loginHandler row = 
+   ifAuthenticated (return &lt;xml&gt;
+            &lt;head&gt;&lt;title&gt;Logged in!&lt;/title&gt;&lt;/head&gt;
+            &lt;body&gt;
+               &lt;h1&gt;Logged in&lt;/h1&gt;
+            &lt;/body&gt;
+         &lt;/xml&gt;) row
+
+fun displayIfAuthenticated page =
+   c &lt;- getCookie userSession;
+   case c of
+      None =&gt; error &lt;xml&gt;Not logged in&lt;/xml&gt;
+    | Some c' =&gt; ifAuthenticated page c'
+</pre>
+
+<p>So we've replaced our <span class="code">loginHandler</span> function with a call to our new <span class="code">ifAuthenticated</span> helper function, which is also able to be used to implement our <span class="code">displayIfAuthenticated</span> function that retrieves the values from the cookie.</span></p>
+
+<p>So the final thing to do is to wrap any content we want to be password-protected with <span class="code">displayIfAuthenticated</span> calls.  Here's one such example from <span class="code">crud.ur</span>:</p>
+
+<pre class="code">
+	[...]
+    and admin () =
+        ls &lt;- editList ();
+        Auth.displayIfAuthenticated (
+        return &lt;xml&gt;&lt;head&gt;
+          &lt;title&gt;{cdata M.title}&lt;/title&gt;
+        &lt;/head&gt;&lt;body&gt;
+
+          &lt;h1&gt;{cdata M.title}&lt;/h1&gt;
+
+          {ls}
+        &lt;/body&gt;&lt;/xml&gt;)
+</pre>
+
+<h2>Exercises</h2>
+
+<h3>Exercise 7.1</h3>
+<p>Adding the other appropriate protections are left as an exercise to the reader.  You might also like to add a link to <span class="code">Auth.login</span> somewhere.</p>
+
+<h3>Exercise 7.2</h3>
+<p>Creating user accounts is not currently possible.  Can you figure out how to reuse the existing <span class="code">Crud</span> module within the <span class="code">Auth</span> module to implement functionality for adding, modifying and deleting users?</p>
+
 <p><a href="step6.html">Previous</a> | <a href="step8.html">Next</a></p>
 </body>
 </html>

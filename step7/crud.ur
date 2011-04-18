@@ -162,6 +162,7 @@ functor Make(M : sig
 
     and admin () =
         ls <- editList ();
+		  Auth.displayIfAuthenticated (
         return <xml><head>
           <title>{cdata M.title}</title>
         </head><body>
@@ -169,7 +170,7 @@ functor Make(M : sig
           <h1>{cdata M.title}</h1>
 
           {ls}
-        </body></xml>
+        </body></xml>)
 
 end
 
