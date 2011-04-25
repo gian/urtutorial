@@ -4,9 +4,7 @@ table user : { Id : int, Username : string, Password : string, Email : string }
 cookie userSession : {Username : string, Password : string}
 
 fun ifAuthenticated page row =
-	re' <- oneOrNoRows(SELECT user.Id, 
-									  user.Username, 
-									  user.Password 
+	re' <- oneOrNoRows1(SELECT user.Id
 							   FROM user 
 							  WHERE user.Username = {[row.Username]} 
 							    AND user.Password = {[row.Password]});
@@ -14,8 +12,7 @@ fun ifAuthenticated page row =
 		None => error <xml>Invalid Login</xml>
 	 | Some re => 
 	  		setCookie userSession 
-					{Value = {Username = readError re.User.Username, 
-								 Password = readError re.User.Password},
+					{Value = row, 
                 Expires = None,
                 Secure = False};
 					 page

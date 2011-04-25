@@ -17,7 +17,7 @@
 
 <p>In this step of the tutorial we are going to introduce one of the rather unique features of Ur/Web.  <em>Metaprogramming</em> over row types allows us to write programs that are able to perform limited computation over the structure of rows.  In practical terms, this means that we can write code that operates independently of the particular table or form inputs, and which can therefore be reused in many different situations.  We're going to demonstrate this by taking a pre-existing component (the <em>Crud</em> -- create, read, update, delete -- example, slightly modified) from the Ur/Web site and apply it to our application to enable the creation and editing of blog entries.</p>
 
-<p>How does this differ from components parameterised on table structure, you might ask?  Well, that's a reasonable way of thinking about some of what this metaprogramming enables, but in Ur/Web it goes further.  We can use familiar programming constructs (e.g. map and fold) to compute new types from old ones.  We can invoke appropriate display functions based upon the types of the fields in a row.  This gives much of the same flexibility that dynamic web languages can provide, however Ur/Web does it in a way that is statically checked at compile time.</p>
+<p>How does this differ from components parameterised on table structure, you might ask?  Well, that's a reasonable way of thinking about some of what this metaprogramming enables, but in Ur/Web it goes further.  We can use familiar programming constructs (e.g. map and fold) to compute new types from old ones.  We can invoke appropriate display functions based upon the types of the fields in a row.  This gives much of the same flexibility that dynamic web languages can provide; however, Ur/Web does it in a way that is statically checked at compile time.</p>
 
 <p>The Crud component is reasonably simple.  We'll skip over most explanation of how it actually works, because you can divert back to that later.  The component consists of two files -- a signature and an implementation.</p>
 
@@ -80,22 +80,18 @@ val admin : unit -&gt; transaction page
               Created = Crud.time "Created",
               Author = Crud.string "Author",
               Body = {Nam = "Entry Body",
-                      Show = (fn b =&gt; &lt;xml&gt;{[String.length b]} characters&lt;/xml&gt;),
-                      Widget = (fn [nm :: Name] =&gt; &lt;xml&gt;
-                        &lt;textarea{nm}&gt;
-                        &lt;/textarea&gt;
-                      &lt;/xml&gt;),
-                      WidgetPopulated = (fn [nm :: Name] b =&gt; &lt;xml&gt;
-                        &lt;textarea{nm}&gt;
-                           {[b]}
-                         &lt;/textarea&gt;
-                      &lt;/xml&gt;),
-              Parse = (fn s =&gt; readError s),
+                      Show = fn b =&gt; &lt;xml&gt;{[String.length b]} characters&lt;/xml&gt;,
+                      Widget = fn [nm :: Name] =&gt; &lt;xml&gt;&lt;textarea{nm}/&gt;&lt;/xml&gt;,
+                      WidgetPopulated = 
+                         fn [nm :: Name] b =&gt; &lt;xml&gt;&lt;textarea{nm}&gt;{[b]}&lt;/textarea&gt;&lt;/xml&gt;,
+              Parse = readError,
               Inject = _}
             }
 </pre>
 
 <p>Now we are using a text area instead of a single-line text field to create and update our entry text.  Obviously you could add styling or custom formatting for the other fields too.</p>
+
+<p>One function provided by Ur/Web to draw attention to is <span class="code">readError</span>.  This is a helpful function that will throw a runtime error if the submitted data is incorrectly formatted with respect to the expected type for that field.</p>
 
 <h3>urblog.urp</h3>
 
@@ -109,7 +105,7 @@ crud
 urblog
 </pre>
 
-<p>This syntax will be familiar to users of various Standard ML build tools.  The <span class="code">$/</span> preceeding the name of the class basically says "look in the standard places for this".  Where the "standard places" are defined more carefully in the Ur/Web manual, but in a properly-configured installation, this should do the right thing.</p>
+<p>This syntax will be familiar to users of various Standard ML build tools.  The <span class="code">$/</span> preceeding the filename of the module basically says "look in the standard places for this", where the "standard places" are defined more carefully in the Ur/Web manual.  In a properly-configured installation this should do the right thing without any intervention on your part.</p>
 
 <p><a href="step5.html">Previous</a> | <a href="step7.html">Next</a></p>
 

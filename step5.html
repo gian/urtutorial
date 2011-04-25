@@ -21,7 +21,7 @@
 
 <h3>Functional Reactive Programming in Ur/Web</h3>
 
-<p>Functional reactive programming as it appears in Ur/Web dictates that we define some data sources, and then the entire page generation becomes a pure function defined in terms of these sources.  This contrasts favourably with the usual Javascript approach of applying (imperatively) a number of transformations to the page at runtime, both in terms of the amount of work you must do as a programmer, as well as in terms of the likelyhood of your program being correct.</p>
+<p>Functional reactive programming as it appears in Ur/Web dictates that we define some data sources, and then the entire page generation becomes a pure function defined in terms of these sources.  This contrasts favourably with the usual Javascript approach of applying (imperatively) a number of transformations to the page at runtime, both in terms of the amount of work you must do as a programmer, as well as in terms of the likelihood of your program being correct.</p>
 
 <p>We define a source using the <span class="code">source <em>value</em></span> function, which defines a source that will continue to yield that value until such a time as we change it using the <span class="code">set</span> function.  Finally, we use the <span class="code">dyn</span> pseudo-tag to include sources within our page.  Whenever the source is updated, it will result in the value presented by the <span class="code">dyn</span> tag.</p>
 
@@ -34,25 +34,25 @@
 <pre class="code">
 [...]
 and mkCommentForm (id:int) s : xbody =
-   &lt;xml&gt;&lt;form&gt;&lt;hidden{#Entry} value={show id}/&gt;
+   &lt;xml&gt;&lt;form&gt;
       &lt;p&gt;Your Name:&lt;br/&gt;&lt;/p&gt;&lt;textbox{#Author}/&gt;&lt;br/&gt;
       &lt;p&gt;Your Comment:&lt;br/&gt;&lt;/p&gt;&lt;textarea{#Body}/&gt;
       &lt;br/&gt;&lt;br/&gt;
-      &lt;submit value="Add Comment" action={handler}/&gt;
+      &lt;submit value="Add Comment" action={handler id}/&gt;
       &lt;button value="Cancel" onclick={set s False}/&gt;&lt;/form&gt;&lt;/xml&gt;
 [...]
 </pre>
 
-<p>In this example we also see the first instace of Ur/Web's handling of forms.  The result of submitting a form is a row, much like the rows we are returned when we query the database.  We assign names to these row fields using the <span class="code">{#Entry}</span> syntax, which defines a hidden form field, the value of which will be accessible as the field named <span class="code">Entry</span> in the row.  We set the <span class="code">action</span> attribute of the submit button to be some function named <span class="code">handler</span> for now.  We'll give the definition of that function soon.  The argument <span class="code">s</span> is the data source that determines if the comment form should be visible or not.  Data sources are first-class values, so they can be passed around in the usual way.  This is one of the things that makes FRP in Ur/Web so exceptionally flexible.</p>
+<p>In this example we also see the first instace of Ur/Web's handling of forms.  The result of submitting a form is a row, much like the rows we are returned when we query the database.  We assign names to these row fields using the <span class="code">{#Author}</span> syntax, which defines an input form field, the value of which will be accessible as the field named <span class="code">Author</span> in the row that will be passed to our handler function.  We set the <span class="code">action</span> attribute of the submit button to be some function named <span class="code">handler</span> that takes an entry id as an argument.  We'll give the definition of that function soon.  The argument <span class="code">s</span> is the data source that determines if the comment form should be visible or not.  Data sources are first-class values, so they can be passed around in the usual way.  This is one of the things that makes FRP in Ur/Web so exceptionally flexible.</p>
+
 
 <p>Let's add a dummy handler for the form that just displays the detail page for the entry we're trying to post a comment to, and then wire in our comment form to a button on the entry.</p>
 
 <pre class="code">
-and handler r = 
-		(detail (readError r.Entry))
+and handler entry r = detail entry
 </pre>
 
-<p><span class="code">readError</span> is input santisation.  It'll throw an error at runtime if the value does not validate as the correct type for that row field.</p>
+<p>And we can define our detail function:</p>
 
 <pre class="code">
 [...]
@@ -61,9 +61,9 @@ style commentForm
 
 and detail (i:int) =
    [...]
-	commentSource &lt;- source False;
+   commentSource &lt;- source False;
                   [...]
-						&lt;button value="Add Comment" onclick={set commentSource True}/&gt;
+                  &lt;button value="Add Comment" onclick={set commentSource True}/&gt;
                   &lt;/div&gt;
                   &lt;div class={commentForm}&gt;
                   &lt;dyn signal={s &lt;- signal commentSource;
@@ -91,10 +91,10 @@ sequence commentS
 <p>Now to define our handler function, which will increment the sequence we've just created, and insert into the database all the fields we gathered from the comment form:</p>
 
 <pre class="code">
-and handler r = 
-       id <- nextval commentS;
-          dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[readError r.Entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP));
-      (detail (readError r.Entry))
+and handler entry r = 
+   id <- nextval commentS;
+   dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP));
+   detail entry
 </pre>
 
 <p>The <span class="code">dml</span> function performs updates on the database, and takes an SQL query as its argument.  It is basically as simple as matching the fields of our submitted form (which reside in <span class="code">r</span>, as the form values are passed as an argument to the handler function).  Ur/Web is going to make sure we don't do anything silly like expect form values  that don't exist, and ensure that we don't do anything completely silly like leave ourselves open to SQL injection attacks.  Aside from allowing users to create arbitrarily many database rows that will be displayed, there would be no danger to placing this application directly into a public environment exactly as it is now.</p>

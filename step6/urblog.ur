@@ -110,17 +110,11 @@ open Crud.Make(struct
               Created = Crud.time "Created",
               Author = Crud.string "Author",
               Body = {Nam = "Entry Body",
-							 Show = (fn b => <xml>{[String.length b]} characters</xml>),
-							 Widget = (fn [nm :: Name] => <xml>
-								<textarea{nm}>
-								</textarea>
-							 </xml>),
-							 WidgetPopulated = (fn [nm :: Name] b => <xml>
-								<textarea{nm}>
-									{[b]}
-							 	</textarea>
-							 </xml>),
-              Parse = (fn s => readError s),
+							 Show = fn b => <xml>{[String.length b]} characters</xml>,
+							 Widget = fn [nm :: Name] => <xml><textarea{nm}/></xml>,
+							 WidgetPopulated = 
+							 	fn [nm :: Name] b => <xml><textarea{nm}>{[b]}</textarea></xml>,
+              Parse = readError,
               Inject = _}
 				}
 end)

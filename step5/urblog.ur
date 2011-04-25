@@ -20,17 +20,17 @@ fun comments i : transaction xbody =
 				</div>
 			</xml>)
 
-and handler r = 
+and handler entry r = 
 	    id <- nextval commentS;
-    		dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[readError r.Entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP));
-		(detail (readError r.Entry))
+    		dml (INSERT INTO comment (Id, Entry, Author, Body, Created) VALUES ({[id]}, {[entry]}, {[r.Author]}, {[r.Body]}, CURRENT_TIMESTAMP));
+		detail entry
 
 and mkCommentForm (id:int) s : xbody =
-	<xml><form><hidden{#Entry} value={show id}/>
+	<xml><form>
 		<p>Your Name:<br/></p><textbox{#Author}/><br/>
 		<p>Your Comment:<br/></p><textarea{#Body}/>
 		<br/><br/>
-      <submit value="Add Comment" action={handler}/>
+      <submit value="Add Comment" action={handler id}/>
 		<button value="Cancel" onclick={set s False}/></form></xml>
 
 and list () =

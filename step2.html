@@ -38,7 +38,7 @@ table entry : { Id : int, Title : string, Created : time, Author : string, Body 
   PRIMARY KEY Id
 </pre>
 
-<p>Tables are exist as primitive entities in Ur/Web, which is one of the features that permits it to enforce such stringent checks on your programs.  For anyone who has struggled through the kinds of web programming where SQL queries are represented as non-semantic strings and in which databases and programs need not agree on their structure, this might come as a refreshing surprise.</p>
+<p>Tables exist as primitive entities in Ur/Web, which is one of the features that permits it to enforce such stringent checks on your programs.  For anyone who has struggled through the kinds of web programming where SQL queries are represented as non-semantic strings and in which databases and programs need not agree on their structure, this might come as a refreshing surprise.</p>
 
 <p>With this in mind, we have defined a table 'entry', with some fields.  Note that the capitalisation of these field names is significant.  Field names start with upper-case letters.</p>
 
@@ -108,7 +108,7 @@ urweb -dbms mysql urblog
 urweb -db "host=localhost user=username password=******* dbname=urblog" -dbms mysql urblog
 </pre>
 
-<p>This generates a binary, and an SQL file suitable for loading into your database engine.  The UrBlog application will expect this database structure to exist within a database called 'urblog'.  You will need to create this database automatically and ensure you set appropriate permissions before you load the schema description that Ur/Web generated. For MySQL, the output SQL file might be loaded in this manner:</p>
+<p>This generates a binary and an SQL file suitable for loading into your database engine.  The UrBlog application will expect this database structure to exist within a database called 'urblog'.  You will need to create this database automatically and ensure you set appropriate permissions before you load the schema description that Ur/Web generated. For MySQL, the output SQL file might be loaded in this manner:</p>
 
 <pre class="code">
 mysql -u username -p urblog &lt; urblog.sql

@@ -46,7 +46,7 @@ and detail (i:int) =
                   &lt;div class={blogEntry}&gt;
                   &lt;p&gt;{[r.Entry.Body]}&lt;/p&gt;
                   &lt;/div&gt;
-						&lt;a link={list ()}&gt;Back to all entries&lt;/a&gt;
+                  &lt;a link={list ()}&gt;Back to all entries&lt;/a&gt;
                   &lt;/body&gt;
                 &lt;/xml&gt;)
 [...]
@@ -69,13 +69,15 @@ fun list () =
 
 <h3>urblog.urs</h3>
 
-<p>We need to make our new detail function visible to the outside world, so we add its signature to the signature definition:</p>
+<p>To ensure our new detail function visible to the outside world, so we add its signature to the signature definition:</p>
 
 <pre class="code">
 val list : unit -&gt; transaction page
 val detail : int -&gt; transaction page
 val main : unit -&gt; transaction page
 </pre>
+
+<p>Note that this is not <em>strictly</em> necessary, as Ur/Web automatically exports functions that previously-exported functions depend upon.  In any case, it may be good practice to include these kinds of top-level pages into your signature file to take advantage of the "self-documenting" effect that these signature definitions may have upon your applications.  My personal approach to learning about the operation of an unfamiliar Ur/Web application usually involves reading all the signature definitions first; this might guide you as to what is or isn't appropriate to include.</p>
 
 <h2>Adding Comments</h2>
 
@@ -134,9 +136,17 @@ sql urblog.sql
 urblog
 </pre>
 
+<p>Before we get too carried away rewriting styles one by one, there's a convenient shorthand that will save us some typing:</p>
+
+<pre class="code">
+rewrite style Urblog/*
+</pre>
+
+<p>This could be used to replace both of the <span class="code">rewrite style</span> lines above.</p>
+
 <h2>Running the example</h2>
 
-<p>You will need to recompile as usual, however, because of the new comments table, you will need to import the generated <span class="code">urblog.sql</span> again, possibly dropping the existing entry table in the process.  You might like to manually add an example comment to an entry..</p>
+<p>You will need to recompile as usual; however, because of the new comments table, you will need to import the generated <span class="code">urblog.sql</span> again, possibly dropping the existing entry table in the process.  You might like to manually add an example comment to an entry.</p>
 
 <p><a href="step3.html">Previous</a> | <a href="step5.html">Next</a></p>
 
