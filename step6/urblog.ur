@@ -114,8 +114,8 @@ open Crud.Make(struct
 							 Widget = fn [nm :: Name] => <xml><textarea{nm}/></xml>,
 							 WidgetPopulated = 
 							 	fn [nm :: Name] b => <xml><textarea{nm}>{[b]}</textarea></xml>,
-              Parse = readError,
-              Inject = _}
+                      Parse = readError,
+                      Inject = _}
 				}
 end)
 

@@ -84,8 +84,8 @@ val admin : unit -&gt; transaction page
                       Widget = fn [nm :: Name] =&gt; &lt;xml&gt;&lt;textarea{nm}/&gt;&lt;/xml&gt;,
                       WidgetPopulated = 
                          fn [nm :: Name] b =&gt; &lt;xml&gt;&lt;textarea{nm}&gt;{[b]}&lt;/textarea&gt;&lt;/xml&gt;,
-              Parse = readError,
-              Inject = _}
+                      Parse = readError,
+                      Inject = _}
             }
 </pre>
 
