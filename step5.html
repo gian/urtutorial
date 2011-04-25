@@ -23,7 +23,7 @@
 
 <p>Functional reactive programming as it appears in Ur/Web dictates that we define some data sources, and then the entire page generation becomes a pure function defined in terms of these sources.  This contrasts favourably with the usual Javascript approach of applying (imperatively) a number of transformations to the page at runtime, both in terms of the amount of work you must do as a programmer, as well as in terms of the likelihood of your program being correct.</p>
 
-<p>We define a source using the <span class="code">source <em>value</em></span> function, which defines a source that will continue to yield that value until such a time as we change it using the <span class="code">set</span> function.  Finally, we use the <span class="code">dyn</span> pseudo-tag to include sources within our page.  Whenever the source is updated, it will result in the value presented by the <span class="code">dyn</span> tag.</p>
+<p>We define a source using the <span class="code">source <em>value</em></span> function, which defines a source that will continue to yield that value until such a time as we change it using the <span class="code">set</span> function.  Finally, we use the <span class="code">dyn</span> pseudo-tag to include sources within our page.  Whenever the source is updated, it will result in the the <span class="code">dyn</span> tag being updated with this new value.</p>
 
 <p>We're going to use this to add a button to every entry detail page that allows us to show or hide a comment form.</p>
 
