@@ -31,7 +31,7 @@ and mkCommentForm (id:int) s : xbody =
 		<p>Your Comment:<br/></p><textarea{#Body}/>
 		<br/><br/>
       <submit value="Add Comment" action={handler id}/>
-		<button value="Cancel" onclick={set s False}/></form></xml>
+		<button value="Cancel" onclick={ fn _ => set s False}/></form></xml>
 
 and list () =
     rows <- queryX (SELECT * FROM entry)
@@ -48,7 +48,7 @@ and list () =
 	 	<xml>
 		  <head>
 				<title>All Entries</title>
-				<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step5/style.css"/>
+				<link rel="stylesheet" type="text/css" href="http://expdev.net/urtutorial/step5/style.css"/>
 		  </head>
 		  <body>
 			<h1>All Entries</h1>
@@ -71,14 +71,14 @@ and detail (i:int) =
 	 | Some r => <xml>
 						<head>
 							<title>{[r.Entry.Title]}</title>
-							<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step5/style.css"/>
+							<link rel="stylesheet" type="text/css" href="http://expdev.net/urtutorial/step5/style.css"/>
 						</head>
 						<body>
 						<h1>{[r.Entry.Title]}</h1>
 						<h2>By {[r.Entry.Author]} at {[r.Entry.Created]}</h2>
 						<div class={blogEntry}>
 						<p>{[r.Entry.Body]}</p>
-						<button value="Add Comment" onclick={set commentSource True}/>
+						<button value="Add Comment" onclick={ fn _ => set commentSource True}/>
 						</div>
 						<div class={commentForm}>
 						<dyn signal={s <- signal commentSource;

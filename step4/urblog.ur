@@ -33,7 +33,7 @@ fun list () =
 	 	<xml>
 		  <head>
 				<title>All Entries</title>
-				<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step4/style.css"/>
+				<link rel="stylesheet" type="text/css" href="http://expdev.net/urtutorial/step4/style.css"/>
 		  </head>
 		  <body>
 			<h1>All Entries</h1>
@@ -55,7 +55,7 @@ and detail (i:int) =
 	 | Some r => <xml>
 						<head>
 							<title>{[r.Entry.Title]}</title>
-							<link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step4/style.css"/>
+							<link rel="stylesheet" type="text/css" href="http://expdev.net/urtutorial/step4/style.css"/>
 						</head>
 						<body>
 						<h1>{[r.Entry.Title]}</h1>

@@ -51,7 +51,7 @@ and detail (i:int) =
     | Some r =&gt; &lt;xml&gt;
                   &lt;head&gt;
                      &lt;title&gt;{[r.Entry.Title]}&lt;/title&gt;
-                     &lt;link rel="stylesheet" type="text/css" href="https://github.com/gian/urtutorial/raw/master/step3/style.css"/&gt;
+                     &lt;link rel="stylesheet" type="text/css" href="http://expdev.net/urtutorial/step4/style.css"/&gt;
                   &lt;/head&gt;
                   &lt;body&gt;
                   &lt;h1&gt;{[r.Entry.Title]}&lt;/h1&gt;
@@ -140,7 +140,7 @@ and detail (i:int) =
 <p>We need to update our project file and style sheet (adding the rewrite for the new style declaration):</p>
 
 <pre class="code">
-allow url https://github.com/gian/urtutorial/raw/master/step4/style.css
+allow url http://expdev.net/urtutorial/step4/style.css
 rewrite style Urblog/blogEntry blogEntry
 rewrite style Urblog/blogComment blogComment
 database dbname=urblog

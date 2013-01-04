@@ -52,7 +52,7 @@ and mkCommentForm (id:int) s : xbody =
       &lt;p&gt;Your Comment:&lt;br/&gt;&lt;/p&gt;&lt;textarea{#Body}/&gt;
       &lt;br/&gt;&lt;br/&gt;
       &lt;submit value="Add Comment" action={handler id}/&gt;
-      &lt;button value="Cancel" onclick={set s False}/&gt;&lt;/form&gt;&lt;/xml&gt;
+      &lt;button value="Cancel" onclick={ fn _ =&gt; set s False}/&gt;&lt;/form&gt;&lt;/xml&gt;
 [...]
 </pre>
 
@@ -76,7 +76,7 @@ and detail (i:int) =
    [...]
    commentSource &lt;- source False;
                   [...]
-                  &lt;button value="Add Comment" onclick={set commentSource True}/&gt;
+                  &lt;button value="Add Comment" onclick={ fn _ =&gt; set commentSource True}/&gt;
                   &lt;/div&gt;
                   &lt;div class={commentForm}&gt;
                   &lt;dyn signal={s &lt;- signal commentSource;
