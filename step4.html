@@ -80,6 +80,19 @@ fun list () =
 [...]
 </pre>
 
+<p>Since we added a new style.css url, we add a line allowing access to the url to our .urp file:</p>
+
+<pre class="code">
+allow url http://expdev.net/urtutorial/step3/style.css
+allow url http://expdev.net/urtutorial/step4/style.css
+rewrite style Urblog/blogEntry blogEntry
+database dbname=urblog
+sql urblog.sql
+
+urblog
+</pre>
+
+
 <h3>urblog.urs</h3>
 
 <p>To ensure our new detail function visible to the outside world, so we add its signature to the signature definition:</p>
