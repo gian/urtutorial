@@ -80,6 +80,19 @@ fun list () =
 [...]
 </pre>
 
+<p>Since we added a new style.css url, we add a line allowing access to the url to our .urp file:</p>
+
+<pre class="code">
+allow url http://expdev.net/urtutorial/step3/style.css
+allow url http://expdev.net/urtutorial/step4/style.css
+rewrite style Urblog/blogEntry blogEntry
+database dbname=urblog
+sql urblog.sql
+
+urblog
+</pre>
+
+
 <h3>urblog.urs</h3>
 
 <p>To ensure our new detail function visible to the outside world, so we add its signature to the signature definition:</p>
@@ -107,6 +120,15 @@ table comment : {Id : int, Entry : int, Created : time, Author : string, Body : 
 </pre>
 
 <p>We also introduce a new style <span class="code">blogComment</span>.</p>
+
+<pre class="code">
+[...]
+style blogEntry
+
+style blogComment
+[...]
+</pre>
+
 
 <p>Our comment function is pretty simple.  The only thing we have to do is specify a type annotation -- Ur/Web can't always figure out the type of functions on its own.  In this case we specify that our function is <span class="code">transaction xbody</span>.  This type (<span class="code">xbody</span>) is that of XML that is suitable for inclusion within a <span class="code">body</span> tag.  The transaction, as before, indicates that this is part of a monad, and is therefore suitable for inclusion within other transactions (as all content that will be delivered to users must be).</p>
 
@@ -137,7 +159,7 @@ and detail (i:int) =
 
 <h3>urblog.urp</h3>
 
-<p>We need to update our project file and style sheet (adding the rewrite for the new style declaration):</p>
+<p>We need to update our project file and style sheet (adding the rewrite for the new style declaration). Since our new stylesheet contains our old css, we can replace our original link (in the list function) with <span class="code">http://expdev.net/urtutorial/step4/style.css</span> and shorten our .urp as shown:</p>
 
 <pre class="code">
 allow url http://expdev.net/urtutorial/step4/style.css

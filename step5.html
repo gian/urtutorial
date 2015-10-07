@@ -87,7 +87,7 @@ and detail (i:int) =
 	               [...]
 </pre>
 
-<p>We also add a new style and add an appropriate rewrite for the style name.</p> 
+<p>We also add a new style and add an appropriate rewrite for the style name. The style.css file can be found at <span class="code">http://expdev.net/urtutorial/step5/style.css</span>. We can replace references to the old link in our .ur and .urp files with the current one, similarly to what we did at the end of step4.</p> 
 
 <h3>Updating the database</h3>
 
@@ -114,7 +114,7 @@ and handler entry r =
 
 <h2>Putting it all together</h2>
 
-<p>As ever, you can compile the application.  Make sure you have at least one test blog entry you can work with in your database, and then you can test the application by going to:</p>
+<p>As ever, you can compile the application. Notice, since we added the sequence <span class="code">commentS</span>, compiling updates our urblog.sql with a new <span class="code">uw_urblog_comments</span> table. You'll need to create this table, possibly by wiping your current ones and reloading urblog.sql as shown earlier. Make sure you have at least one test blog entry you can work with in your database, and then you can test the application by going to:</p>
 
 <p><a href="http://localhost:8080/Urblog/list">http://localhost:8080/Urblog/list</a></p>
 
