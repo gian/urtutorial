@@ -121,6 +121,15 @@ table comment : {Id : int, Entry : int, Created : time, Author : string, Body : 
 
 <p>We also introduce a new style <span class="code">blogComment</span>.</p>
 
+<pre class="code">
+[...]
+style blogEntry
+
+style blogComment
+[...]
+</pre>
+
+
 <p>Our comment function is pretty simple.  The only thing we have to do is specify a type annotation -- Ur/Web can't always figure out the type of functions on its own.  In this case we specify that our function is <span class="code">transaction xbody</span>.  This type (<span class="code">xbody</span>) is that of XML that is suitable for inclusion within a <span class="code">body</span> tag.  The transaction, as before, indicates that this is part of a monad, and is therefore suitable for inclusion within other transactions (as all content that will be delivered to users must be).</p>
 
 <pre class="code">
